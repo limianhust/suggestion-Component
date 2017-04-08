@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<meta name="suggestion" content="component">
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>suggestion 组件</title>
+<style id="jsbin-css">
+*{
+  margin: 0;
+  padding: 0;
+}
+.suggestion{
+  width: 130px;
+  margin: 0 auto;
+}
+.suggestion ul,li{
+  list-style: none;
+}
+li{
+  border: 1px solid #ccc;
+}
+</style>
+</head>
+<body>
+<div class="suggestion">
+  <div class="input">
+    <input type="text" class="input">
+  </div>
+    <ul>
+      
+    </ul>
+  
+</div>
+<script id="jsbin-javascript">
+var timer
+//监听用户输入事件
+$('.suggestion input').on('input',function(){
+  var $ul = $('.suggestion ul')
+  var $input = $(this)
+  //console.log($input.val())
+  
+  if(timer){
+    clearTimeout(timer)
+    console.log(timer)
+  }
+  timer = setTimeout(function(){
+    $ul.html('')
+  if($input.val()){
+    search($input.val(), html)
+  } else{
+    $ul.html('')
+  }
+  
+  function html(ret){
+    $ul.html('')
+    //console.log(ret.data)
+    var result = ret.items
+    for(var i=0; i<result.length; i++){
+      var $li = $(`<li> <a href="${result[i].html_url}" target="_blank">${result[i].full_name}</a> </li>`)
+      $ul.append($li)
+    }
+    
+  }
+  },200)
+  
+})
+
+//拿到用户输入的字符，开始搜索匹配项
+function search(keyword, html){
+  //console.log(keyword)
+  $.ajax({
+    url: 'https://api.github.com/search/repositories',
+    data: {q: keyword}
+  }).done(function (ret) {
+    //console.log(ret)
+    //拿到ajax请求得到的数据ret，调用html函数
+    html(ret)
+  })
+}
+
+//var data = [
+//  'abdsa',
+//  'abcgwhjsdc',
+//  'aaaaaaaaaa',
+//  'bhsd',
+//  '李冕',
+//  '吴萍萍',
+//  '舒杨',
+//  '徐永干',
+//  '李言'
+//]
+</script>
+</body>
+</html>
